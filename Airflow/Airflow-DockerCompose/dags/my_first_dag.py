@@ -17,19 +17,19 @@ dag = DAG(
     'my-first-dag',
     default_args = default_args,
     description = 'My First DAG',
-    schedule_internal = timedelta(days=1)
+    schedule_interval = timedelta(days=1)
 )
 
 extract = BashOperator(
     task_id = 'extract',
-    bash_commands = 'cut -d":" -f1,3,6 /etc/passwd > /home/project/airflow/dags/extracted-data.txt',
-    dag = dag,
+    bash_command = 'cut -d":" -f1,3,6 /etc/passwd > /opt/airflow/dags/extracted-data.txt',
+    dag = dag
 )
 
 transform_and_load = BashOperator(
     task_id='transform',
-    bash_command='tr ":" "," < /home/project/airflow/dags/extracted-data.txt > /home/project/airflow/dags/transformed-data.csv',
-    dag=dag,
+    bash_command='tr ":" "," < /opt/airflow/dags/extracted-data.txt > /opt/airflow/dags/transformed-data.csv',
+    dag=dag
 )
 
 extract >> transform_and_load
